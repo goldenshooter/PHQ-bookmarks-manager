@@ -50,6 +50,12 @@ export class OverviewPageComponent {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1)
   }
 
+  get pagedBookmarks(): Bookmark[] {
+    console.log('all bookmarks', this.bookmarkService.getAll())
+    const start = (this.page - 1) * this.pageSize
+    return this.bookmarkService.getAll().slice(start, start + this.pageSize)
+  }
+
   setPage(n: number) {
     this.page = n
   }
@@ -60,12 +66,6 @@ export class OverviewPageComponent {
 
   prevPage() {
     if (this.page > 1) this.page--
-  }
-
-  get pagedBookmarks(): Bookmark[] {
-    console.log('all bookmarks', this.bookmarkService.getAll())
-    const start = (this.page - 1) * this.pageSize
-    return this.bookmarkService.getAll().slice(start, start + this.pageSize)
   }
 
   add(): void {
@@ -94,7 +94,7 @@ export class OverviewPageComponent {
     this.bookmarkService.saveToStorage()
   }
 
-  startEditing(id: string, currentUrl: string) {
+  onEditing(id: string, currentUrl: string) {
     this.editingId = id
     this.editedUrl = currentUrl
   }

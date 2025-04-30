@@ -37,7 +37,6 @@ export class BookmarkService {
   }
 
   add(url: string): void {
-    // add the new link to the beggining of the array
     this.bookmarks.unshift({ id: uuidv4(), url })
   }
 
