@@ -6,6 +6,15 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 95vh;
   box-sizing: border-box;
+}
+
+.card {
+  background-color: #f9f9f9; /* soft elegant background */
+  padding: 0px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 550px;
+  margin: 20px auto;
 }
