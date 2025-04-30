@@ -1,0 +1,52 @@
+<div class="container">
+  <h2>Add Bookmark</h2>
+  <div class="form-container">
+    <form (ngSubmit)="add()" #bookmarkForm="ngForm">
+      <input name="url" [(ngModel)]="url" required placeholder="http://" />
+      <button type="submit" [disabled]="!isUrlValid">Submit</button>
+    </form>
+    <div *ngIf="url && !isUrlValid" class="error-message">Invalid URL</div>
+  </div>
+
+  <ul>
+    <li *ngFor="let link of pagedBookmarks">
+      <div class="bookmark-row">
+        <ng-container *ngIf="editingId !== link.id; else editTemplate">
+          • {{ link.url }}
+          <div class="button-group">
+            <button (click)="startEditing(link.id, link.url)">Edit</button>
+            <button (click)="delete(link.id)" class="danger">Delete</button>
+          </div>
+        </ng-container>
+
+        <ng-template #editTemplate>
+          <input
+            type="text"
+            [(ngModel)]="editedUrl"
+            name="editUrl{{ link.id }}"
+            required
+          />
+          <div class="button-group">
+            <button (click)="update(link.id)" [disabled]="!isUpdatedUrlValid">
+              Update
+            </button>
+            <button (click)="finishUpdate()" class="cancel">Cancel</button>
+          </div>
+        </ng-template>
+      </div>
+    </li>
+  </ul>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page === 1">Previous</button>
+    <span
+      *ngFor="let pageNum of totalPagesArray"
+      (click)="setPage(pageNum)"
+      [style.fontWeight]="page === pageNum ? 'bold' : 'normal'"
+      style="cursor: pointer; padding: 0 4px"
+    >
+      {{ pageNum }}
+    </span>
+    <button (click)="nextPage()" [disabled]="page === totalPages">Next</button>
+  </div>
+</div>
