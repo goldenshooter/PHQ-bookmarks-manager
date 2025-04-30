@@ -77,7 +77,7 @@ button[disabled] {
 }
 
 .scrollable-list {
-  max-height: 400px;
+  max-height: 420px;
   overflow-y: auto;
 }
 
