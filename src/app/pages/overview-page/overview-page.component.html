@@ -1,61 +1,90 @@
 <div class="container">
-  <div class="card">
-    <h2 class="card-header">Add Bookmark</h2>
-    <form (ngSubmit)="add()" #bookmarkForm="ngForm">
-      <div class="form-body">
-        <input name="url" [(ngModel)]="url" required placeholder="http://" />
-        <button type="submit" [disabled]="!isUrlValid" class="submit-button">
-          Submit
+  <div class="body-container">
+    <div class="image-container">
+      <img src="/assets/images/PHQ-icon-left.jpg" alt="PHQ Logo" />
+    </div>
+
+    <div class="main-content">
+      <div class="card">
+        <form (ngSubmit)="add()" #bookmarkForm="ngForm">
+          <div class="form-body">
+            <input
+              name="url"
+              [(ngModel)]="url"
+              required
+              placeholder="http://"
+            />
+            <button
+              type="submit"
+              [disabled]="!isUrlValid"
+              class="submit-button"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+        <div class="error-message">
+          {{ url && !isUrlValid ? 'Invalid url' : '' }}
+        </div>
+      </div>
+
+      <div class="card">
+        <ul class="scrollable-list">
+          <li *ngFor="let link of pagedBookmarks">
+            <div class="bookmark-row">
+              <ng-container *ngIf="editingId !== link.id; else editTemplate">
+                • {{ link.url }}
+                <div class="button-group">
+                  <button (click)="onEditing(link.id, link.url)">Edit</button>
+                  <button (click)="delete(link.id)" class="danger">
+                    Delete
+                  </button>
+                </div>
+              </ng-container>
+
+              <ng-template #editTemplate>
+                <input
+                  type="text"
+                  [(ngModel)]="editedUrl"
+                  name="editUrl{{ link.id }}"
+                  required
+                />
+                <div class="button-group">
+                  <button
+                    (click)="update(link.id)"
+                    [disabled]="!isUpdatedUrlValid"
+                  >
+                    Update
+                  </button>
+                  <button (click)="finishUpdate()" class="cancel">
+                    Cancel
+                  </button>
+                </div>
+              </ng-template>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pagination">
+        <button (click)="prevPage()" [disabled]="page === 1">Previous</button>
+        <span
+          *ngFor="let pageNum of totalPagesArray"
+          (click)="setPage(pageNum)"
+          [style.fontWeight]="page === pageNum ? 'bold' : 'normal'"
+          style="cursor: pointer; padding: 0 4px"
+        >
+          {{ pageNum }}
+        </span>
+        <button (click)="nextPage()" [disabled]="page === totalPages">
+          Next
         </button>
       </div>
-    </form>
-    <div class="error-message">
-      {{ url && !isUrlValid ? 'Invalid url' : '' }}
     </div>
-  </div>
 
-  <div class="card">
-    <ul class="scrollable-list">
-      <li *ngFor="let link of pagedBookmarks">
-        <div class="bookmark-row">
-          <ng-container *ngIf="editingId !== link.id; else editTemplate">
-            • {{ link.url }}
-            <div class="button-group">
-              <button (click)="onEditing(link.id, link.url)">Edit</button>
-              <button (click)="delete(link.id)" class="danger">Delete</button>
-            </div>
-          </ng-container>
-
-          <ng-template #editTemplate>
-            <input
-              type="text"
-              [(ngModel)]="editedUrl"
-              name="editUrl{{ link.id }}"
-              required
-            />
-            <div class="button-group">
-              <button (click)="update(link.id)" [disabled]="!isUpdatedUrlValid">
-                Update
-              </button>
-              <button (click)="finishUpdate()" class="cancel">Cancel</button>
-            </div>
-          </ng-template>
-        </div>
-      </li>
-    </ul>
-  </div>
-
-  <div class="pagination">
-    <button (click)="prevPage()" [disabled]="page === 1">Previous</button>
-    <span
-      *ngFor="let pageNum of totalPagesArray"
-      (click)="setPage(pageNum)"
-      [style.fontWeight]="page === pageNum ? 'bold' : 'normal'"
-      style="cursor: pointer; padding: 0 4px"
-    >
-      {{ pageNum }}
-    </span>
-    <button (click)="nextPage()" [disabled]="page === totalPages">Next</button>
+    <div class="image-container">
+      <img src="/assets/images/PHQ-icon-right.jpg" alt="PHQ Logo mirror" />
+    </div>
   </div>
 
   <footer class="footer">Design and build by Chao Zhang (Steven)</footer>
